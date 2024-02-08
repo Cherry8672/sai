@@ -1,0 +1,33 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+
+public class PhoneBook {
+    public static void main(String[] args) {
+        HashMap<String, String> phoneBook = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("phonebook.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split("\t");
+                if (fields.length == 2) {
+                    phoneBook.put(fields[0], fields[1]);
+                    phoneBook.put(fields[1], fields[0]);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Enter a name or phone number: ");
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        String input = scanner.nextLine();
+        String output;
+        if ((output = phoneBook.get(input)) != null) {
+            System.out.println(output);
+        } else {
+            System.out.println("Not found");
+        }
+    }
+}
